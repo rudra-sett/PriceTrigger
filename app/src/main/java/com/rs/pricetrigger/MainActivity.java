@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import org.jsoup.*;
@@ -17,23 +18,54 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     final Context myApp = this;
-    public List<String> offers = Collections.emptyList();
-
-    public void setOffers(List<String> offers) {
-        this.offers = offers;
+    final String filename = "targets";
+    final String fileContents = "Hello world!";
+    List<String> triggers = new ArrayList<String>();
+    public void readtriggers(){
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            Toast toast = Toast.makeText(this,"You do not have any triggers set up!",Toast.LENGTH_LONG);
+            toast.show();
+            e.printStackTrace();
+        }
+        InputStreamReader inputStreamReader =
+                new InputStreamReader(fis, StandardCharsets.UTF_8);
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            String line = reader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append('\n');
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            // Error occurred when opening raw file for reading.
+            Toast toast = Toast.makeText(this,"You do not have any triggers set up!",Toast.LENGTH_LONG);
+            toast.show();
+        } finally {
+            String contents = stringBuilder.toString();
+        }
     }
-
-    public List<String> getOffers() {
-        return offers;
+    public void writetriggers(){
+        try (FileOutputStream fos = this.openFileOutput(filename, Context.MODE_PRIVATE)) {
+            fos.write(triggers.toString().getBytes());
+            //fileContents.getBytes()
+        }catch (Exception e){
+            Toast toast = Toast.makeText(this,"An unknown error ocurred!",Toast.LENGTH_LONG );
+            toast.show();
+        }
     }
-
     public void getPrices(String html){
         Document doc = Jsoup.parse(html);
         //Elements containers = doc.getElementsByClass("pla-unit-container");
@@ -48,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("product",productname);
             String costcontainer = container.getElementsByClass("sh-pr__secondary-content").text();
             //Log.d("full text",cost);
-            //costcontainer.replaceAll("(Was)\\s+[$](\\d+[.]\\d\\d)","");
+
             String cost = costcontainer.split(" ")[0];
             /*costcontainer = costcontainer.replace(cost,"");
             costcontainer = costcontainer.replace("Was","");
@@ -62,18 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
             //String store = container.getElementsByClass("sh-pr__secondary-content")
             //final String store = cost.split(" ")[1];
-            //within each pla-container, get 3rd child, then 1st child, then 2nd child
-            //container.select(":root:eq(2):eq");
-            //Log.d("whole thing",container.ownText());
-            //Elements children = container.children();
-            //Log.d("how many children?",""+container.childNodeSize());
-            //Log.d("full text",container.child(0).child(0).child(0).child(1).child(0).text()+"");
-            //String productname = container.child(0).child(0).child(0).child(1).child(0).child(0).text();
-            //String[] hack =container.child(0).child(0).child(0).child(1).child(0).text().replace(productname,"").split(" ");
-            //String cost = hack[0];
-            //       String cost = container.child(0).child(0).child(0).child(1).child(0).child(0).firstElementSibling().text();
-            //String productname = children.get(2).children().get(0).children().get(0).ownText();
-            //String cost = children.get(2).children().get(0).children().get(1).ownText();
+
             Log.d("item",""+productname+" costs "+ cost);
             final String finalCost = cost;
             runOnUiThread(new Runnable() //run on ui thread
@@ -113,19 +134,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        /* An instance of this class will be registered as a JavaScript interface */
-
-        /*class MyJavaScriptInterface
-        {
-            @JavascriptInterface
-            @SuppressWarnings("unused")
-            public void processHTML(String html)
-            {
-                // process the html as needed by the app
-            }
-        }*/
 
         final WebView browser = (WebView)findViewById(R.id.browser);
         /* JavaScript must be enabled if you want it to work, obviously */

@@ -40,7 +40,8 @@
             app:layout_constraintTop_toBottomOf="@+id/browser"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Enter product name"/>
+            android:text="Name of product"
+            android:textAlignment="center"/>
 
     <ScrollView
             android:layout_width="match_parent"
@@ -115,5 +116,17 @@
                     android:cursorVisible="true"/>
         </LinearLayout>
     </ScrollView>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Price to trigger"
+            android:ems="10"
+            android:id="@+id/editTextPrice"
+            tools:layout_editor_absoluteY="516dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
