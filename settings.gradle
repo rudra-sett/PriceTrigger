@@ -1,0 +1,2 @@
+rootProject.name='Price Trigger'
+include ':app'
