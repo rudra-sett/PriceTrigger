@@ -10,14 +10,12 @@
     <WebView
             android:layout_width="331dp"
             android:layout_height="288dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:visibility="gone"
             android:id="@+id/browser"
-            android:layout_margin="5dp"
-            android:layout_marginTop="30dp"/>
+            tools:layout_editor_absoluteY="388dp"
+            app:layout_constraintTop_toBottomOf="@id/scrollview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
             android:text="get prices"
@@ -45,75 +43,26 @@
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="320dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/browser"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/scrollview">
+            android:id="@+id/scrollview"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="320dp"
                 android:orientation="vertical"
                 android:id="@+id/mlinearlayout">
 
-            <TextView
-                    android:text="TextView"
+            <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
-                    android:layout_marginLeft="8dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!"
-                    android:id="@+id/textView"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="false"
-                    android:cursorVisible="true"/>
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!"
-                    android:id="@+id/textView3"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="false"
-                    android:cursorVisible="true"/>
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!"
-                    android:id="@+id/textView4"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="false"
-                    android:cursorVisible="true"/>
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!"
-                    android:id="@+id/textView5"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="false"
-                    android:cursorVisible="true"/>
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!"
-                    android:id="@+id/textView6"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:singleLine="false"
-                    android:cursorVisible="true"/>
+                    android:layout_height="320dp"
+                    android:id="@+id/triggerlist"/>
         </LinearLayout>
     </ScrollView>
 
@@ -124,9 +73,10 @@
             android:text="Price to trigger"
             android:ems="10"
             android:id="@+id/editTextPrice"
-            tools:layout_editor_absoluteY="516dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/website"
+            app:layout_constraintBottom_toTopOf="@+id/loadbutton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

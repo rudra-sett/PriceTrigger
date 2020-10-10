@@ -7,10 +7,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import org.jsoup.*;
@@ -30,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     final Context myApp = this;
     final String filename = "targets";
     final String fileContents = "Hello world!";
-    List<String> triggers = new ArrayList<String>();
+    ArrayList<String> triggers = new ArrayList<String>();
+    CustomAdapter ca = new CustomAdapter(triggers,this);
     public void readtriggers(){
         FileInputStream fis = null;
         try {
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             String line = reader.readLine();
             while (line != null) {
                 stringBuilder.append(line).append('\n');
+                triggers.add(line);
                 line = reader.readLine();
             }
         } catch (IOException e) {
@@ -97,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("item",""+productname+" costs "+ cost);
             final String finalCost = cost;
-            runOnUiThread(new Runnable() //run on ui thread
+            //triggers.add(store2+"//"+finalCost);
+            /*runOnUiThread(new Runnable() //run on ui thread
             {
                 public void run()
                 {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     // save a reference to the textview for later
                     //myTextViews[i] = rowTextView;
                 }
-            });
+            });*/
 
         }
         //TextView result = findViewById(R.id.textView);
@@ -129,12 +129,23 @@ public class MainActivity extends AppCompatActivity {
             getPrices(html);
         }
     }
-
+    ListView triggerlist;
+    EditText webname;
+    EditText price;
+    Button addbutton;
+    ArrayAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        triggerlist = (ListView) findViewById(R.id.triggerlist);
+        webname = (EditText) findViewById(R.id.website);
+        price = (EditText)findViewById(R.id.editTextPrice);
+        addbutton = (Button) findViewById(R.id.loadbutton);
 
+        triggerlist.setAdapter(ca);
+
+        //BROWSER THINGS
         final WebView browser = (WebView)findViewById(R.id.browser);
         /* JavaScript must be enabled if you want it to work, obviously */
         browser.getSettings().setJavaScriptEnabled(true);
@@ -172,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         browser.loadUrl(url);
     }
 
-    public void clickbutton(View v){
+    /*public void clickbutton(View v){
         EditText urlbox = findViewById(R.id.website);
         String query = urlbox.getText().toString();
         query = query.replace(" ","+");
@@ -180,6 +191,14 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://www.google.com/search?sa=X&biw=1517&bih=697&tbm=shop&ei=GUBlX7uhIMia_QaPhJ6oDA&q="+query+"&oq="+query+"&gs_lcp=Cg5tb2JpbGUtc2gtc2VycBADMgIIADICCAAyAggAMgIIADIECAAQGDIECAAQGDIECAAQGDIECAAQGDoICAAQsQMQgwFQgDhY_ztgqD9oAHAAeACAAXGIAdECkgEDNC4xmAEAoAEBqgESbW9iaWxlLXNoLXdpei1zZXJwwAEB&sclient=mobile-sh-serp";
         url = "https://www.google.com/search?sa=X&biw=1517&bih=697&tbm=shop&ei=GUBlX7uhIMia_QaPhJ6oDA&q="+query+"&oq="+query+"&gs_lcp=CgZwc3ktYWIQAzIHCAAQsQMQQzICCAAyAggAMgIIADICCAAyBQgAELEDMgIIADICCAAyAggAMgIIADoHCAAQRxCwAzoECAAQQ0oFCCYSAW5KBQgnEgExUMIUWJgdYPMeaABwAHgAgAE4iAG7ApIBATaYAQCgAQGqAQdnd3Mtd2l6wAEB&sclient=psy-ab&ved=0ahUKEwiR6eOzwt3rAhUioHIEHW0FAfIQ4dUDCA0&uact=5";
         loadproduct(url);
+    }*/
+    public void clickbutton(View v){
+        String item = webname.getText().toString();
+        String pricevalue = price.getText().toString();
+        item = item+","+pricevalue;
+        triggers.add(item);
+        ca.notifyDataSetChanged();
+        webname.setText("");
     }
 
 }
