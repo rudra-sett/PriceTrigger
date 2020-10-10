@@ -6,7 +6,7 @@
                                                    android:layout_height="match_parent"
                                                    android:padding="10dp">
 
-    <EditText
+    <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
@@ -17,9 +17,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="5dp"
-            android:hint="Product Name"/>
+            android:hint="Product Name"
+            android:editable="false"/>
 
-    <EditText
+    <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -31,7 +32,8 @@
             app:layout_constraintStart_toEndOf="@+id/productedittext"
             android:layout_margin="5dp"
             android:layout_marginEnd="8dp"
-            android:hint="Price"/>
+            android:hint="Price"
+            android:editable="false"/>
 
     <ImageButton
             android:layout_width="wrap_content"
@@ -42,5 +44,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/priceedittext"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@android:color/background_light"/>
+            android:background="@android:color/transparent"
+            android:translationZ="2dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
-            android:text="get prices"
+            android:text="save trigger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loadbutton"
@@ -38,8 +38,8 @@
             app:layout_constraintTop_toBottomOf="@+id/browser"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Name of product"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:hint="Name of product"/>
 
     <ScrollView
             android:layout_width="match_parent"
@@ -70,13 +70,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Price to trigger"
             android:ems="10"
             android:id="@+id/editTextPrice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@+id/website"
-            app:layout_constraintBottom_toTopOf="@+id/loadbutton"/>
+            app:layout_constraintBottom_toTopOf="@+id/loadbutton"
+            android:hint="Price to trigger"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

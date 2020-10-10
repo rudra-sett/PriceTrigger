@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     final String fileContents = "Hello world!";
     ArrayList<String> triggers = new ArrayList<String>();
     CustomAdapter ca = new CustomAdapter(triggers,this);
+
     public void readtriggers(){
         FileInputStream fis = null;
         try {
@@ -133,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     EditText webname;
     EditText price;
     Button addbutton;
-    ArrayAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         webname = (EditText) findViewById(R.id.website);
         price = (EditText)findViewById(R.id.editTextPrice);
         addbutton = (Button) findViewById(R.id.loadbutton);
-
         triggerlist.setAdapter(ca);
 
         //BROWSER THINGS

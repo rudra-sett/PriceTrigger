@@ -53,14 +53,15 @@ public long getItemId(int pos) {
         price.setText(list.get(position).split(",")[1]);
 
         //Handle buttons and add onClickListeners
-        AppCompatImageButton deletebtn = (AppCompatImageButton)view.findViewById(R.id.deletebutton);
+        final AppCompatImageButton deletebtn = (AppCompatImageButton)view.findViewById(R.id.deletebutton);
         //Button deletebtn= (Button)view.findViewById(R.id.deletebutton);
 
         deletebtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //do something
-
+                list.remove(position);
+                notifyDataSetChanged();
             }
         });
         /*addBtn.setOnClickListener(new View.OnClickListener(){
