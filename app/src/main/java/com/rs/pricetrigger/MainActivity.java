@@ -68,57 +68,28 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getPrices(String html){
         Document doc = Jsoup.parse(html);
-        //Elements containers = doc.getElementsByClass("pla-unit-container");
-        //Not anymore! These are shopping cards
-        //Elements containers = doc.getElementsByClass("sh-pr__product-result");
+        String testprice = "";
+        String testshop = "";
+        String link = "";
         Elements containers = doc.getElementsByAttributeValueContaining("class","sh-pr__product-result");
         Log.d("how many",""+containers.toArray().length);
         //go through each pla-unit-container "e"
         for (Element container:containers){
-            //within each shopping card
-            final String productname = container.getElementsByClass("sh-ti__ltitle-link").text();
-            Log.d("product",productname);
-            String costcontainer = container.getElementsByClass("sh-pr__secondary-content").text();
-            //Log.d("full text",cost);
-
-            String cost = costcontainer.split(" ")[0];
-            /*costcontainer = costcontainer.replace(cost,"");
-            costcontainer = costcontainer.replace("Was","");
-            costcontainer = costcontainer.replace("now","");
-            //costcontainer = costcontainer.replace("formonths","");
-            costcontainer = costcontainer.replaceAll("[^a-zA-Z]","");
-            costcontainer = costcontainer.replace("formonths","");
-            final String store = costcontainer;*/
-            final String store2 = container.getElementsByClass("sh-pr__secondary-content").get(0).children().get(1).text();
-            //Elements sec = container.getElementsByClass("sh-pr__secondary-content");
-
-            //String store = container.getElementsByClass("sh-pr__secondary-content")
-            //final String store = cost.split(" ")[1];
-
-            Log.d("item",""+productname+" costs "+ cost);
-            final String finalCost = cost;
-            //triggers.add(store2+"//"+finalCost);
-            /*runOnUiThread(new Runnable() //run on ui thread
-            {
-                public void run()
-                {
-                    LinearLayout linlay = findViewById(R.id.mlinearlayout);
-                    final TextView rowTextView = new TextView(myApp);
-                    linlay.removeAllViews();
-                    // set some properties of rowTextView or something
-                    rowTextView.setText(""+productname+" costs "+ finalCost+" at "+store2);
-
-                    // add the textview to the linearlayout
-                    linlay.addView(rowTextView);
-
-                    // save a reference to the textview for later
-                    //myTextViews[i] = rowTextView;
-                }
-            });*/
-
+            link = container.child(0).attr("href");
+            //Log.d("link","The item is at google.com"+link);
+            Elements infocontainers = container.getElementsByClass("sh-pr__secondary-container");
+            Log.d("there are",""+infocontainers.toArray().length);
+            //first infocontainer > link > 2nd child > 2nd child
+            link = infocontainers.get(0).child(0).attr("href");
+            testprice = infocontainers.get(0).child(0).child(1).text();
+            testprice = testprice.split(" ")[0];
+            testprice = testprice.replace("$","");
+            //testshop = container.child(0).child(0).text();
+            //container to link to secondary content
+            //Log.d("item",""+productname+" costs "+ cost);
+            Log.d("item","It costs "+testprice+" at "+link);
         }
-        //TextView result = findViewById(R.id.textView);
-        //result.setText("There are "+elements.toArray().length+" offers of this product");
+
     }
     class MyJavaScriptInterface
     {
@@ -138,18 +109,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        triggerlist = (ListView) findViewById(R.id.triggerlist);
-        webname = (EditText) findViewById(R.id.website);
-        price = (EditText)findViewById(R.id.editTextPrice);
-        addbutton = (Button) findViewById(R.id.loadbutton);
+        triggerlist = findViewById(R.id.triggerlist);
+        webname = findViewById(R.id.website);
+        price = findViewById(R.id.editTextPrice);
+        addbutton = findViewById(R.id.loadbutton);
         triggerlist.setAdapter(ca);
 
         //BROWSER THINGS
-        final WebView browser = (WebView)findViewById(R.id.browser);
+        final WebView browser = findViewById(R.id.browser);
         /* JavaScript must be enabled if you want it to work, obviously */
         browser.getSettings().setJavaScriptEnabled(true);
         WebSettings webSettings = browser.getSettings();
-        //webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
@@ -162,23 +133,17 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url)
             {
                 /* This call inject JavaScript into the page which just finished loading. */
-                //browser.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-                browser.loadUrl("javascript:HTMLOUT.processHTML(document.documentElement.outerHTML);");
+                browser.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+                //browser.loadUrl("javascript:HTMLOUT.processHTML(document.documentElement.outerHTML);");
             }
         });
         //browser.loadUrl("http://lexandera.com/files/jsexamples/gethtml.html");
 
     }
 
-//public  WebView browser = findViewById(R.id.browser);
     /* load a web page */
     public void loadproduct(String url){
-        final WebView browser = (WebView)findViewById(R.id.browser);
-        /* JavaScript must be enabled if you want it to work, obviously */
-        //browser.getSettings().setJavaScriptEnabled(true);
-
-        /* Register a new JavaScript interface called HTMLOUT */
-        //browser.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
+        final WebView browser = findViewById(R.id.browser);
         browser.loadUrl(url);
     }
 
@@ -192,12 +157,22 @@ public class MainActivity extends AppCompatActivity {
         loadproduct(url);
     }*/
     public void clickbutton(View v){
+        EditText urlbox = findViewById(R.id.website);
+        String query = urlbox.getText().toString();
+        query = query.replace(" ","+");
+        //String url = "https://www.google.com/search?ei=ZIxZX5GnIKLAytMP7YqEkA8&q="+query+"&oq="+query+"&gs_lcp=CgZwc3ktYWIQAzIHCAAQsQMQQzICCAAyAggAMgIIADICCAAyBQgAELEDMgIIADICCAAyAggAMgIIADoHCAAQRxCwAzoECAAQQ0oFCCYSAW5KBQgnEgExUMIUWJgdYPMeaABwAHgAgAE4iAG7ApIBATaYAQCgAQGqAQdnd3Mtd2l6wAEB&sclient=psy-ab&ved=0ahUKEwiR6eOzwt3rAhUioHIEHW0FAfIQ4dUDCA0&uact=5";
+        String url = "https://www.google.com/search?sa=X&biw=1517&bih=697&tbm=shop&ei=GUBlX7uhIMia_QaPhJ6oDA&q="+query+"&oq="+query+"&gs_lcp=Cg5tb2JpbGUtc2gtc2VycBADMgIIADICCAAyAggAMgIIADIECAAQGDIECAAQGDIECAAQGDIECAAQGDoICAAQsQMQgwFQgDhY_ztgqD9oAHAAeACAAXGIAdECkgEDNC4xmAEAoAEBqgESbW9iaWxlLXNoLXdpei1zZXJwwAEB&sclient=mobile-sh-serp";
+        url = "https://www.google.com/search?sa=X&biw=1517&bih=697&tbm=shop&ei=GUBlX7uhIMia_QaPhJ6oDA&q="+query+"&oq="+query+"&gs_lcp=CgZwc3ktYWIQAzIHCAAQsQMQQzICCAAyAggAMgIIADICCAAyBQgAELEDMgIIADICCAAyAggAMgIIADoHCAAQRxCwAzoECAAQQ0oFCCYSAW5KBQgnEgExUMIUWJgdYPMeaABwAHgAgAE4iAG7ApIBATaYAQCgAQGqAQdnd3Mtd2l6wAEB&sclient=psy-ab&ved=0ahUKEwiR6eOzwt3rAhUioHIEHW0FAfIQ4dUDCA0&uact=5";
+        loadproduct(url);
+
+
         String item = webname.getText().toString();
         String pricevalue = price.getText().toString();
         item = item+","+pricevalue;
         triggers.add(item);
         ca.notifyDataSetChanged();
         webname.setText("");
+        price.setText("");
     }
 
 }
