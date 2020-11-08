@@ -1,5 +1,6 @@
 package com.rs.pricetrigger;
 
+import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -73,23 +74,34 @@ public class MainActivity extends AppCompatActivity {
         String link = "";
         Elements containers = doc.getElementsByAttributeValueContaining("class","sh-pr__product-result");
         Log.d("how many",""+containers.toArray().length);
+        ArrayList<String> results = new ArrayList<>();
         //go through each pla-unit-container "e"
         for (Element container:containers){
             link = container.child(0).attr("href");
             //Log.d("link","The item is at google.com"+link);
+            //get the container with the price/shop info
             Elements infocontainers = container.getElementsByClass("sh-pr__secondary-container");
             Log.d("there are",""+infocontainers.toArray().length);
+
             //first infocontainer > link > 2nd child > 2nd child
+            //get link to product and price
             link = infocontainers.get(0).child(0).attr("href");
             testprice = infocontainers.get(0).child(0).child(1).text();
             testprice = testprice.split(" ")[0];
             testprice = testprice.replace("$","");
-            //testshop = container.child(0).child(0).text();
-            //container to link to secondary content
-            //Log.d("item",""+productname+" costs "+ cost);
-            Log.d("item","It costs "+testprice+" at "+link);
-        }
 
+            if (Integer.parseInt(price.getText().toString()) >= Integer.parseInt(testprice)){
+                if (!results.contains(""+testprice+",google.com/"+link)) {
+                    results.add("" + testprice + ",google.com/" + link);
+                }
+            }
+
+           // Log.d("item","It costs "+testprice+" at google.com/"+link);
+        }
+        if (!results.isEmpty()){
+            //do something
+
+        }
     }
     class MyJavaScriptInterface
     {
@@ -126,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setDomStorageEnabled(true);
         /* Register a new JavaScript interface called HTMLOUT */
         browser.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
-
         /* WebViewClient must be set BEFORE calling loadUrl! */
         browser.setWebViewClient(new WebViewClient() {
             @Override
@@ -171,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
         item = item+","+pricevalue;
         triggers.add(item);
         ca.notifyDataSetChanged();
-        webname.setText("");
-        price.setText("");
+        //webname.setText("");
+        //price.setText("");
     }
 
 }

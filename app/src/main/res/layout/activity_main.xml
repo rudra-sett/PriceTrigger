@@ -10,7 +10,7 @@
     <WebView
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/browser"
             app:layout_constraintTop_toBottomOf="@id/scrollview"
             app:layout_constraintEnd_toEndOf="parent"
